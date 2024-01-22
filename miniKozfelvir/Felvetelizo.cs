@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace miniKozfelvir
 {
-    public class Felvetelizo: IFelvetelizo
+    public class Felvetelizo : IFelvetelizo
     {
         public const string CSVFEJ = "om_azonosito;nev;email;szuletesi_datum;ertesitesi_cim;matek_eredmeny;magyar_eredmeny";
 
@@ -34,13 +34,46 @@ namespace miniKozfelvir
             ModositCSVSorral(csvSor);
         }
 
-        public string OM_Azonosito { get => omAzon; set => throw new NotImplementedException(); }
-        public string Neve { get => nev; set => throw new NotImplementedException(); }
-        public string ErtesitesiCime { get => ertesitesiCim; set => throw new NotImplementedException(); }
-        public string Email { get => email; set => throw new NotImplementedException(); }
-        public DateTime SzuletesiDatum { get => szuletesiDatum; set => throw new NotImplementedException(); }
-        public int Matematika { get => Convert.ToInt32(matek); set => throw new NotImplementedException(); }
-        public int Magyar { get => Convert.ToInt32(magyar); set => throw new NotImplementedException(); }
+        public string OM_Azonosito
+        {
+            get => omAzon;
+            set
+            {
+                if (value.Length != 11)
+                {
+                    throw new ArgumentException("Az om azonosító hossza nem megfelelő!");
+                }
+                omAzon = value;
+            }
+        }
+        public string Neve { get => nev; set => nev = value; }
+        public string ErtesitesiCime { get => ertesitesiCim; set => ertesitesiCim = value; }
+        public string Email { get => email; set => email = value; }
+        public DateTime SzuletesiDatum { get => szuletesiDatum; set => szuletesiDatum = value; }
+        public int Matematika
+        {
+            get => Convert.ToInt32(matek);
+            set
+            {
+                if (value < 0 || value > 50)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                matek = Convert.ToByte(value);
+            }
+        }
+        public int Magyar
+        {
+            get => Convert.ToInt32(magyar);
+            set
+            {
+                if (value < 0 || value > 50)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                magyar = Convert.ToByte(value);
+            }
+        }
 
         public override string ToString()
         {

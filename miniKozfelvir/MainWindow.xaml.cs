@@ -36,11 +36,8 @@ namespace miniKozfelvir
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.DefaultExt = ".csv";
             if (ofd.ShowDialog() == true) {
-                List<string> azonositok = felvetelizok.Select(x => x.OM_Azonosito).ToList();
                 File.ReadAllLines(ofd.FileName).Skip(1).Select(x => new Felvetelizo(x)).ToList().ForEach(x => {
-                    if (azonositok.Contains(x.OM_Azonosito)) {
-                        
-                    }
+                    felvetelizok.Remove(felvetelizok.FirstOrDefault(y => y.OM_Azonosito == x.OM_Azonosito));
                     felvetelizok.Add(x);
                    });
             }
@@ -56,10 +53,22 @@ namespace miniKozfelvir
             }
         }
 
+        private void btnUj_Click(object sender, RoutedEventArgs e)
+        {
+            Felvetelizo? ujFelvetelizo = null;
+            Diakfelulet ujAblak = new Diakfelulet(ref ujFelvetelizo);
+            ujAblak.ShowDialog();
+
+            if (ujFelvetelizo != null) {
+                felvetelizok.Add(ujFelvetelizo);
+            }
+
+        }
+
         private void btnTorol_Click(object sender, RoutedEventArgs e)
         {
             if (dgFelvetelizok.SelectedIndex != -1) {
-                felvetelizok.RemoveAt(dgFelvetelizok.SelectedIndex);
+                felvetelizok.Remove(dgFelvetelizok.SelectedItem as Felvetelizo);
             }
         }
 
